@@ -1,38 +1,38 @@
 import "./page.css"
-import { useState , useContext , useEffect} from "react"
+import { useState, useContext, useEffect } from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ToastContext from "./context/ToastContext";
 import ChnageImagePrompt from "./ChangeImagePrompt";
-const API = "http://localhost:5000";
+const API = "https://task-manager-api-tsgq.onrender.com"
 
 const Profile = () => {
-    const {toast} = useContext(ToastContext)
-    const [data , setData] = useState({})
-    const [tasks , setTasks] = useState([])
-    const [updatePrompt , setUpdatePrompt] = useState(false)
-    const [tasksCount , setTasksCount] = useState({
-        pending:0,
-        completed:0,
-        total:0
+    const { toast } = useContext(ToastContext)
+    const [data, setData] = useState({})
+    const [tasks, setTasks] = useState([])
+    const [updatePrompt, setUpdatePrompt] = useState(false)
+    const [tasksCount, setTasksCount] = useState({
+        pending: 0,
+        completed: 0,
+        total: 0
     })
     const navigate = useNavigate()
-    const APICALL = async()=>{
-        await axios.get(API+"/user" ,{ headers: { "authorization": localStorage.getItem('token') } })
-        .then((res)=>{
-            setData(res.data.user)
-            // localStorage.setItem('image',res.data.user.image)
-            // console.log(res)
-        })
-        .catch((e)=>{
-            // console.log(e.message)
-            toast.error(e.response.message)
-        })
+    const APICALL = async () => {
+        await axios.get(API + "/user", { headers: { "authorization": localStorage.getItem('token') } })
+            .then((res) => {
+                setData(res.data.user)
+                // localStorage.setItem('image',res.data.user.image)
+                // console.log(res)
+            })
+            .catch((e) => {
+                // console.log(e.message)
+                toast.error(e.response.message)
+            })
     }
     const getTasksCount = () => {
-        const completedTask = tasks.filter((task)=>task.status === "Completed")
+        const completedTask = tasks.filter((task) => task.status === "Completed")
         const newTasksCount = {
-            pending:tasks.length - completedTask.length,
+            pending: tasks.length - completedTask.length,
             completed: completedTask.length,
             total: tasks.length
         };
@@ -42,19 +42,19 @@ const Profile = () => {
         getTasksCount();
     }, [tasks])
 
-    
-    const TaskAPI = async()=>{
-        await axios.get(API+"/tasks" ,{ headers: { "authorization": localStorage.getItem('token') } })
-        .then((res)=>{
-            setTasks(res.data.tasks)
-            console.log(res)
-        })
-        .catch((e)=>{
-            // console.log(e.message)
-            toast.error(e.response.message)
-        })
+
+    const TaskAPI = async () => {
+        await axios.get(API + "/tasks", { headers: { "authorization": localStorage.getItem('token') } })
+            .then((res) => {
+                setTasks(res.data.tasks)
+                console.log(res)
+            })
+            .catch((e) => {
+                // console.log(e.message)
+                toast.error(e.response.message)
+            })
     }
-    const handleEdit = ()=>{
+    const handleEdit = () => {
         setUpdatePrompt(true)
     }
     const closePrompt = () => { // function for passing as a prop to close the prompt
@@ -63,13 +63,13 @@ const Profile = () => {
     }
 
 
-    useEffect(()=>{
-     if(!localStorage.getItem("token")){
-        navigate("/")
-     }
-     APICALL()
-     TaskAPI()
-    },[])
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            navigate("/")
+        }
+        APICALL()
+        TaskAPI()
+    }, [])
     return (
         <>
 
@@ -79,14 +79,14 @@ const Profile = () => {
                         <div className="panel">
                             <div className="user-heading round container">
                                 <span className="figure">
-                                    <img src={data.image} alt="profilePic"/>
+                                    <img src={data.image} alt="profilePic" />
                                     <div className="data-container">
-                            <div className="name" onClick={handleEdit}>Edit</div>
-                        </div>
-                                   
+                                        <div className="name" onClick={handleEdit}>Edit</div>
+                                    </div>
+
                                 </span>
                                 <h1>{data.firstName} {data.lastName}</h1>
-                                <p style={{color:"white"}}>{data.email}</p>
+                                <p style={{ color: "white" }}>{data.email}</p>
                             </div>
 
                             {/* <ul className="nav nav-pills nav-stacked">
@@ -97,16 +97,16 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className="prompt">
-                {updatePrompt && <ChnageImagePrompt closePrompt={closePrompt} />}
-            </div>
+                        {updatePrompt && <ChnageImagePrompt closePrompt={closePrompt} />}
+                    </div>
                     <div className="profile-info col-md-9">
                         <div className="panel">
                         </div>
                         <div className="panel">
-                            <div className="panel-body bio-graph-heading" style={{color:"white"}}>
+                            <div className="panel-body bio-graph-heading" style={{ color: "white" }}>
                                 <h1>Bio Graph</h1>
                                 <div className="row">
-                                    <div className="bio-row" style={{color:"white"}}>
+                                    <div className="bio-row" style={{ color: "white" }}>
                                         <p><span>First Name </span>: {data.firstName}</p>
                                     </div>
                                     <div className="bio-row">
@@ -124,7 +124,7 @@ const Profile = () => {
                                     <div className="bio-row">
                                         <p><span>Mobile </span>: {data.phone}</p>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -138,8 +138,8 @@ const Profile = () => {
                                             </div>
                                             <div className="bio-desk">
                                                 <h2 className="red">Total<br></br> Tasks</h2>
-                                                
-                                                
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -152,7 +152,7 @@ const Profile = () => {
                                             </div>
                                             <div className="bio-desk">
                                                 <h2 className="terques">Pending <br></br>Tasks</h2>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@ const Profile = () => {
                                             </div>
                                             <div className="bio-desk">
                                                 <h2 className="green">Completed Tasks</h2>
-                                                
+
                                             </div>
                                         </div>
                                     </div>

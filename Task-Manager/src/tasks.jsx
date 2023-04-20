@@ -7,7 +7,7 @@ import "./page.css"
 import { useState, useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import ToastContext from "./context/ToastContext";
-const API = "http://localhost:5000";
+const API = "https://task-manager-api-tsgq.onrender.com"
 
 const Tasks = () => {
     const [data, setData] = useState({
@@ -22,11 +22,11 @@ const Tasks = () => {
     const formatDate = (date) => {
         const dateObj = moment(date);
         return dateObj.format('DD/MM/YYYY');
-      };
-      const formatTime = (Time) => {
+    };
+    const formatTime = (Time) => {
         const dateObj = moment(Time);
         return dateObj.format('hh:mm A');
-      };
+    };
 
     const APICALL = async () => {
         await axios.get(API + "/tasks", { headers: { "authorization": localStorage.getItem('token') } })
@@ -165,12 +165,12 @@ const Tasks = () => {
                                                             <h6 class="mb-0"><span class={task.status === "Completed" ? "badge bg-success" : "badge bg-warning"}>{task.status}</span></h6>
                                                         </td>
                                                         <td class="align-middle" >
-                                                            {task.status === "Pending" ? (<span data-mdb-toggle="tooltip" title="Done" style={{ cursor: "pointer", marginRight:"10px" }} onClick={() => handleTaskComp(task._id)}><i
+                                                            {task.status === "Pending" ? (<span data-mdb-toggle="tooltip" title="Done" style={{ cursor: "pointer", marginRight: "10px" }} onClick={() => handleTaskComp(task._id)}><i
                                                                 class="fas fa-check fa-lg text-success me-3"></i></span>) :
-                                                                (<span data-mdb-toggle="tooltip" title="Done" style={{ cursor: "pointer", visibility: "hidden" , marginRight:"10px" }} onClick={() => handleTaskComp(task._id)}><i
+                                                                (<span data-mdb-toggle="tooltip" title="Done" style={{ cursor: "pointer", visibility: "hidden", marginRight: "10px" }} onClick={() => handleTaskComp(task._id)}><i
                                                                     class="fas fa-check fa-lg text-success me-3"></i></span>)}
 
-                                                            <span style={{ cursor: "pointer", marginRight:"10px" }} data-mdb-toggle="tooltip" title="Edit" onClick={() => handleEditTask(task._id, task.task)}><i
+                                                            <span style={{ cursor: "pointer", marginRight: "10px" }} data-mdb-toggle="tooltip" title="Edit" onClick={() => handleEditTask(task._id, task.task)}><i
                                                                 class="fa-regular fa-pen-to-square fa-lg text-warning"></i></span>
                                                             <span onClick={() => handleDeleteTask(task._id)} style={{ cursor: "pointer" }} data-mdb-toggle="tooltip" title="Remove"><i
                                                                 class="fas fa-trash-alt fa-lg text-danger"></i></span>
