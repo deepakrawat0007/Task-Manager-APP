@@ -538,6 +538,12 @@ ul.summary-list > li:last-child  {
     border: 0;
     font-size: 20px;
 }
+.navBar-new-style{
+    width: 100vw;
+    margin: 0;
+    color: white;
+    box-shadow: 5px 5px 5px 5px rgba(80, 139, 252, 1);
+}
 .new-col{
     background-color: rgba(126, 64, 246, 1);
     background: linear-gradient(
