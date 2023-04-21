@@ -538,6 +538,14 @@ ul.summary-list > li:last-child  {
     border: 0;
     font-size: 20px;
 }
+.new-col{
+    background-color: rgba(126, 64, 246, 1);
+    background: linear-gradient(
+        to right,
+        rgba(126, 64, 246, 1),
+        rgba(80, 139, 252, 1)
+      );
+}
 .innerBox form button:hover{
     cursor: pointer;
     background-color: rgba(126, 64, 246, 1);

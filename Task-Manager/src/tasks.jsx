@@ -7,6 +7,7 @@ import "./page.css"
 import { useState, useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import ToastContext from "./context/ToastContext";
+import Footer from "./footer";
 const API = "https://task-manager-api-tsgq.onrender.com"
 
 const Tasks = () => {
@@ -45,8 +46,9 @@ const Tasks = () => {
         }
         APICALL()
     }, [])
-    const handleTaskComp = (id) => {
-        axios.put(`${API}/updateTaskStatus/${id}`, {}, { headers: { "authorization": localStorage.getItem('token') } })
+    const handleTaskComp = (id , status) => {
+        console.log(status)
+        axios.put(`${API}/updateTaskStatus/${id}`, {status:status}, { headers: { "authorization": localStorage.getItem('token') } })
             .then((res) => {
                 setTasks(res.data.tasks)
             })
@@ -127,7 +129,7 @@ const Tasks = () => {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-xl-10">
+                        <div class="col-md-12 col-xl-30">
 
                             <div class="card mask-custom">
                                 <div class="card-body p-4 text-white">
@@ -142,8 +144,11 @@ const Tasks = () => {
                                         <table class="table text-white mb-0" >
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Time</th>
+                                                    <th>S.No#</th>
+                                                    <th scope="col">Created <i class="fas fa-calendar-days fa-lg me-3"></i></th>
+                                                    <th scope="col">Created <i class="fas fa-clock fa-lg me-3"></i></th>
+                                                    <th scope="col">Completed <i class="fas fa-calendar-days fa-lg me-3"></i></th>
+                                                    <th scope="col">Completed <i class="fas fa-clock fa-lg me-3"></i></th>
                                                     <th scope="col">Task</th>
                                                     <th scope="col">Status</th>
                                                     <th scope="col">Actions</th>
@@ -153,10 +158,19 @@ const Tasks = () => {
                                                 {tasks?.map((task, idx) => (
                                                     <tr class="fw-normal" key={task._id}>
                                                         <th>
-                                                            <span class="ms-2">{formatDate(task.updatedAt)}</span>
+                                                            <span class="ms-2">#{idx+1}</span>
                                                         </th>
                                                         <th>
-                                                            <span class="ms-2">{formatTime(task.updatedAt)}</span>
+                                                            <span class="ms-2">{formatDate(task.createdAt)}</span>
+                                                        </th>
+                                                        <th>
+                                                            <span class="ms-2">{formatTime(task.createdAt)}</span>
+                                                        </th>
+                                                        <th>
+                                                            <span class="ms-2">{task.status !== "Completed"?"---":formatDate(task.updatedAt)}</span>
+                                                        </th>
+                                                        <th>
+                                                            <span class="ms-2">{task.status !== "Completed"?"---":formatTime(task.updatedAt)}</span>
                                                         </th>
                                                         <td class="align-middle">
                                                             <span>{task.task}</span>
@@ -165,13 +179,13 @@ const Tasks = () => {
                                                             <h6 class="mb-0"><span class={task.status === "Completed" ? "badge bg-success" : "badge bg-warning"}>{task.status}</span></h6>
                                                         </td>
                                                         <td class="align-middle" >
-                                                            {task.status === "Pending" ? (<span data-mdb-toggle="tooltip" title="Done" style={{ cursor: "pointer", marginRight: "10px" }} onClick={() => handleTaskComp(task._id)}><i
+                                                            {task.status === "Pending" ? (<span data-mdb-toggle="tooltip" title="Done" style={{ cursor: "pointer", marginRight: "10px" }} onClick={() => handleTaskComp(task._id , "Completed")}><i
                                                                 class="fas fa-check fa-lg text-success me-3"></i></span>) :
-                                                                (<span data-mdb-toggle="tooltip" title="Done" style={{ cursor: "pointer", visibility: "hidden", marginRight: "10px" }} onClick={() => handleTaskComp(task._id)}><i
-                                                                    class="fas fa-check fa-lg text-success me-3"></i></span>)}
+                                                                (<span data-mdb-toggle="tooltip" title="Retry" style={{ cursor: "pointer", marginRight: "10px" }} onClick={() => handleTaskComp(task._id , "Pending")}><i
+                                                                    class="fas fa-clock-rotate-left fa-lg text-warning me-3"></i></span>)}
 
                                                             <span style={{ cursor: "pointer", marginRight: "10px" }} data-mdb-toggle="tooltip" title="Edit" onClick={() => handleEditTask(task._id, task.task)}><i
-                                                                class="fa-regular fa-pen-to-square fa-lg text-warning"></i></span>
+                                                                class="fa-regular fa-pen-to-square fa-lg" style={{color:"cyan"}}></i></span>
                                                             <span onClick={() => handleDeleteTask(task._id)} style={{ cursor: "pointer" }} data-mdb-toggle="tooltip" title="Remove"><i
                                                                 class="fas fa-trash-alt fa-lg text-danger"></i></span>
                                                         </td>
@@ -193,6 +207,7 @@ const Tasks = () => {
                     </div>
                 </div>
             </section>
+            <Footer/>
         </>
     )
 }
