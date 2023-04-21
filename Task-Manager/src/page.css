@@ -552,6 +552,18 @@ ul.summary-list > li:last-child  {
         rgba(80, 139, 252, 1)
       );
 }
+.spinner img{
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border-radius: 100%;
+}
+.spinner {
+    position: absolute;
+    right: 50%;
+    top:0;
+    z-index:6;
+}
 .innerBox form button:hover{
     cursor: pointer;
     background-color: rgba(126, 64, 246, 1);

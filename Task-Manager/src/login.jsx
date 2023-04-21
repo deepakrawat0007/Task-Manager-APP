@@ -2,6 +2,7 @@ import { useState, useContext } from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ToastContext from "./context/ToastContext";
+import spinner from "./assets/Spinner-0.5s-164px.svg";
 const API = "https://task-manager-api-tsgq.onrender.com"
 
 const Login = () => {
@@ -10,6 +11,7 @@ const Login = () => {
 		password: ""
 	})
 	const { toast } = useContext(ToastContext)
+	const [loading , setLoading] = useState(false)   
 	const navigate = useNavigate("")
 
 	const APICALL = async () => {
@@ -18,10 +20,12 @@ const Login = () => {
 			password: data.password
 		})
 			.then((res) => {
+				setLoading(false)
 				toast.success("Login Success")
 				localStorage.setItem('token', res.data.token)
 				navigate("/home")
 			}).catch((e) => {
+				setLoading(false)
 				// console.log(e.message)
 				toast.error(e.response.data.message)
 			})
@@ -37,6 +41,7 @@ const Login = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
+		setLoading(true)
 		const call = APICALL()
 		toast.promise(call, {
 			loading: "loading..."
@@ -46,6 +51,7 @@ const Login = () => {
 	return (
 		<>
 			<div className="limiter">
+			{loading?<div className="spinner"><img src={spinner} alt="spinner"/></div>:''}
 				<div className="container-login100" style={{ backgroundImage: "url(/bg-01.jpg)" }}>
 					<div className="wrap-login100">
 						<form className="login100-form validate-form">
