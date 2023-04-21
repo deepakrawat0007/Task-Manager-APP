@@ -68,8 +68,9 @@ router.delete("/deleteTask/:id" , async(req , res)=>{
 //update Task Status
 
 router.put("/updateTaskStatus/:id" , async(req , res)=>{
+    const {status} = req.body
     try{
-        await Task.findByIdAndUpdate({_id : req.params.id}, { $set:{'status': "Completed"}})
+        await Task.findByIdAndUpdate({_id : req.params.id}, { $set:{'status':status}})
         
         const tasks = await Task.find({user:req.user}).sort({_id:-1})
         return res.status(200).json({
